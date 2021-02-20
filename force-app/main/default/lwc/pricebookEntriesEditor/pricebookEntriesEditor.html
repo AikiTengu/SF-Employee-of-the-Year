@@ -1,0 +1,26 @@
+<template>
+    <div if:true={showSpinner} class="slds-align-content-center slds-p-around_xx-large">
+        <lightning-spinner alternative-text="Loading" variant="brand" size="large"></lightning-spinner>
+    </div>
+    <div class="slds-m-around_medium">
+        <template if:false={isListViewEmpty}>
+            <template if:false={showSpinner}>
+                <template if:true={listView.data}>
+                    <lightning-datatable columns={columns}
+                                         data={listView.data}
+                                         draft-values={draftValues}
+                                         key-field="Id"
+                                         hide-checkbox-column="true"
+                                         show-row-number-column="true"
+                                         onsave={handleSave}
+                                         oncellchange={handleCellChange}
+                                         oncancel={handleCancel}>
+                    </lightning-datatable>
+                </template>
+            </template>
+        </template>
+    </div>
+    <div if:true={isListViewEmpty} class="empty-list">
+        There are no Pricebook Entries
+    </div>
+</template>

@@ -1,0 +1,9 @@
+.empty-list {
+    align-content: center;
+    text-align: center;
+    font-size: 1.5em;
+    height: max-content;
+    opacity: 0.8;
+    font-family: "Ek Mukta", sans-serif;
+    padding: 3em;
+}
