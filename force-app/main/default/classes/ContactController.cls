@@ -11,24 +11,28 @@ public inherited sharing class ContactController {
     @AuraEnabled
      public static void setActiveContact(String contactToSelectId) {
         try {
-             Contact contact = [
+             List<Contact> contactList = [
                  SELECT Id
                  FROM Contact
                  WHERE Active__c = true
              ];
-             contact.Active__c = false;
-             update contact;
-
-            contact = [
+             for (Contact contact: contactList) {
+                 contact.Active__c = false;
+                 update contact;
+             }             
+            } catch (Exception e) {
+                throw new AuraHandledException(e.getMessage());
+                } 
+         try {       
+            Contact contact = [
                  SELECT Id
                  FROM Contact
                  WHERE Id = :contactToSelectId
-             ];             
-  
+             ];               
             contact.Active__c = true;
             update contact;
         } catch (Exception e) {
-        throw new AuraHandledException(e.getMessage());
-        } 
+            throw new AuraHandledException(e.getMessage());
+            }
     }
 }
