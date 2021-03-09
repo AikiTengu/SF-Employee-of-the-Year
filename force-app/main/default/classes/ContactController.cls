@@ -17,7 +17,7 @@ public inherited sharing class ContactController {
                  WHERE Id = :contactToSelectId
              ];
 
-             
+         //Insert this thing somewhere    
         
             update contact;
         } catch (Exception e) {
