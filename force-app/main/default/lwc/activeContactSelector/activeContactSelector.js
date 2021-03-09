@@ -1,7 +1,6 @@
 import { LightningElement, wire } from "lwc";
 import { reduceErrors } from "c/ldsUtils";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
-import { refreshApex } from "@salesforce/apex";
 import FIRSTNAME_FIELD from "@salesforce/schema/Contact.FirstName";
 import LASTNAME_FIELD from "@salesforce/schema/Contact.LastName";
 import EMAIL_FIELD from "@salesforce/schema/Contact.Email";
@@ -31,26 +30,25 @@ export default class activeContactList extends LightningElement {
 	@wire(getContacts)
 	contacts;
 
-    activeContact = null;
-
 	fireSelRow(event) {
         let contactId = event.detail.row.Id;
 
+        let contactName = event.detail.row.FirstName + ' ' + event.detail.row.LastName;
 		setActiveContact({ contactToSelectId: contactId })
 			.then(() => {
 				this.dispatchEvent(
 					new ShowToastEvent({
-						title: "Contact selected",
-						message: `Record ID ${contactId}`,
+						title: "Active contact selected",
+						message: `Contact name: ${contactName}`,
 						variant: "success"
 					})
 				);
-				refreshApex(this.contacts);
+
 			})
 			.catch((error) => {
 				this.dispatchEvent(
 					new ShowToastEvent({
-						title: `Error selecting contact ${contactId}`,
+						title: `Error selecting active contact ${contactName}`,
 						message: error.body.message,
 						variant: "error"
 					})
