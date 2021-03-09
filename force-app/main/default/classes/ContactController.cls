@@ -7,4 +7,21 @@ public inherited sharing class ContactController {
             ORDER BY Name
         ];
     }
+
+    @AuraEnabled
+     public static void setActiveContact(String contactToSelectId) {
+        try {
+             Contact contact = [
+                 SELECT Id
+                 FROM Contact
+                 WHERE Id = :contactToSelectId
+             ];
+
+             
+        
+            update contact;
+        } catch (Exception e) {
+        throw new AuraHandledException(e.getMessage());
+        } 
+    }
 }
