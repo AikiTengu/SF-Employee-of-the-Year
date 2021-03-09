@@ -14,11 +14,18 @@ public inherited sharing class ContactController {
              Contact contact = [
                  SELECT Id
                  FROM Contact
-                 WHERE Id = :contactToSelectId
+                 WHERE Active__c = true
              ];
+             contact.Active__c = false;
+             update contact;
 
-         //Insert this thing somewhere    
-        
+            contact = [
+                 SELECT Id
+                 FROM Contact
+                 WHERE Id = :contactToSelectId
+             ];             
+  
+            contact.Active__c = true;
             update contact;
         } catch (Exception e) {
         throw new AuraHandledException(e.getMessage());
