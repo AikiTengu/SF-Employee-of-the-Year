@@ -1,10 +1,10 @@
 public class CanInNomTriggerHandler extends TriggerHandler {
-    // private List<CandidateInNomination__c> newCandidates;
-    // private List<CandidateInNomination__c> oldCandidates;
+     private List<CandidateInNomination__c> newCandidates;
+     private List<CandidateInNomination__c> oldCandidates;
 
     public CanInNomTriggerHandler() { 
-        // newCandidates = new List<CandidateInNomination__c>();
-        // oldCandidates = new List<CandidateInNomination__c>();
+         this.newCandidates = Trigger.New;
+         this.oldCandidates = Trigger.Old;
     } 
 
     public override void beforeUpdate() {
@@ -16,7 +16,7 @@ public class CanInNomTriggerHandler extends TriggerHandler {
          FROM Contact 
          WHERE Active__c = true ];
 
-         for(CandidateInNomination__c candidate : Trigger.New) {
+         for(CandidateInNomination__c candidate : newCandidates) {
             candidate.PushedBy__c = contact.Id;
          }
     } 
