@@ -15,10 +15,20 @@ public class CanInNomTriggerHandler extends TriggerHandler {
         Contact contact = [SELECT Id
          FROM Contact 
          WHERE Active__c = true ];
-
-         for(CandidateInNomination__c candidate : newCandidates) {
+         
+        List<CandidateInNomination__c> candidateChecklist = [
+            SELECT Id, Nomination__c
+            FROM CandidateInNomination__c 
+            WHERE PushedBy__c = :contact.Id];
+        
+        if (candidateChecklist.size()>2) {
+            for(CandidateInNomination__c candidate : newCandidates) {
+                candidate.addError('Cannot add Candidate in this nomination! Already 3 candidates from this user!');
+            }
+        }
+        else for(CandidateInNomination__c candidate : newCandidates) {
             candidate.PushedBy__c = contact.Id;
-         }
+        }
     } 
 
     public override void  beforeDelete () {
