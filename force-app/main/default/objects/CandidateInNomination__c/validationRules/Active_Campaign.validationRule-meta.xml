@@ -3,7 +3,7 @@
     <fullName>Active_Campaign</fullName>
     <active>true</active>
     <description>New candidate is possible for active Campaign only</description>
-    <errorConditionFormula>Nomination__r.CampaignCampaign__r.IsActive = false</errorConditionFormula>
+    <errorConditionFormula>Nomination__r.Campaign__r.IsActive = false</errorConditionFormula>
     <errorDisplayField>Nomination__c</errorDisplayField>
     <errorMessage>Please select a Nomination for active Campaign!</errorMessage>
 </ValidationRule>

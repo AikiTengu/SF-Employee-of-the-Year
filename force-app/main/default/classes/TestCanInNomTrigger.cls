@@ -3,15 +3,14 @@ private class TestAccountDeletion {
     @isTest static void TestInsertFreshNewCandidate() {
         // Test data setup
         // Create an account with an opportunity, and then try to delete it
-        Nomination__c testNomination = new Nomination(NominationName = 'Test');
-        testNomination.Campaign = [SELECT Id 
-            FROM Campaign
-            WHERE Active = true];
+        Campaign testCampaign = new Campaign(Name = 'TestCampaign');
+        Nomination__c testNomination = new Nomination__c(Name = 'Test');
+      //  testNomination.Campaign__c = testNomination;
         insert testNomination;
 
         CandidateInNomination__c testCandidate = new CandidateInNomination__c();
         testCandidate.Name = 'Test Candidate';
-        testCandidate.Nomination = testNomination;
+ //       testCandidate.Nomination__c = testNomination;
         //insert CandidateInNomination__c;
        
         // Perform test
