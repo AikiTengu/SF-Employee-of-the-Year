@@ -1,29 +1,37 @@
-@isTest
+@isTest(SeeAllData=true)
 private class TestCanInNomTrigger {
     @isTest static void TestInsertFreshNewCandidate() {
         // Test data setup
-        // Create an account with an opportunity, and then try to delete it
-        Campaign testCampaign = new Campaign(Name = 'TestCampaign');
-        Nomination__c testNomination = new Nomination__c(Name = 'Test');
-      //  testNomination.Campaign__c = testNomination;
-        insert testNomination;
+        // Create contact, campaign and nomination, and - finally - test candidate
 
-        CandidateInNomination__c testCandidate = new CandidateInNomination__c();
-        testCandidate.Name = 'Test Candidate';
- //       testCandidate.Nomination__c = testNomination;
-        //insert CandidateInNomination__c;
-       
-        // Perform test
-        // Test.startTest();
-        // Database.DeleteResult result = Database.delete(acct, false);
-        // Test.stopTest();
-        // Verify 
-        // In this case the deletion should have been stopped by the trigger,
-        // so verify that we got back an error.
-    //     System.assert(!result.isSuccess());
-    //     System.assert(result.getErrors().size() > 0);
-    //     System.assertEquals('Cannot delete account with related opportunities.',
-    //                          result.getErrors()[0].getMessage());
+        Contact testContact = [SELECT Id
+        FROM Contact
+        WHERE Active__c = true].get(0);
+
+        Nomination__c testNomination = [SELECT Id
+        FROM Nomination__c 
+        WHERE Campaign__c IN 
+        (SELECT Id 
+        FROM Campaign 
+        WHERE Name = 'COV Season 2')].get(0);
+
+         CandidateInNomination__c testCandidate = new CandidateInNomination__c();
+         testCandidate.Name = 'Test Candidate';
+         testCandidate.CandidateContact__c = testContact.Id;
+         testCandidate.PushedBy__c = testContact.Id;
+         testCandidate.Nomination__c = testNomination.Id;
+         testCandidate.Reason__c = 'Test Reason';
+
+        //Perform test
+        Test.startTest();
+        insert testCandidate;      
+        Test.stopTest();
+
+        CandidateInNomination__c assertCandidate = [SELECT Id, Name
+        FROM CandidateInNomination__c
+        WHERE Name = :testCandidate.Name].get(0);
+    
+        System.assertEquals(testCandidate.Name, assertCandidate.Name);
      }
     
 }
