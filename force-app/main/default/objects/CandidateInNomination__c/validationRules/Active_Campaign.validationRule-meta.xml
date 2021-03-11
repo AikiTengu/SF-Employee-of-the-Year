@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Active_Campaign</fullName>
+    <active>true</active>
+    <description>New candidate is possible for active Campaign only</description>
+    <errorConditionFormula>Nomination__r.CampaignCampaign__r.IsActive = false</errorConditionFormula>
+    <errorDisplayField>Nomination__c</errorDisplayField>
+    <errorMessage>Please select a Nomination for active Campaign!</errorMessage>
+</ValidationRule>
