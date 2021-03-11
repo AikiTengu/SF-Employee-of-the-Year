@@ -1,5 +1,5 @@
 @isTest
-private class TestAccountDeletion {
+private class TestCanInNomTrigger {
     @isTest static void TestInsertFreshNewCandidate() {
         // Test data setup
         // Create an account with an opportunity, and then try to delete it
