@@ -1,5 +1,6 @@
 import { LightningElement, track, wire } from "lwc";
 import { reduceErrors } from "c/ldsUtils";
+import { refreshApex } from '@salesforce/apex';
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import getCandidates from "@salesforce/apex/CandidateController.getCandidates";
 import setVote from "@salesforce/apex/CandidateController.setVote";
@@ -10,7 +11,7 @@ export default class votingList extends LightningElement {
 	@track candidates = [];
 
 	@wire(getCandidates)
-	wired(result){
+	CandidateList(result){
 		this.candidates = result;
 		if (this.candidates.data) {
 			let preparedCandidates = [];
@@ -23,6 +24,7 @@ export default class votingList extends LightningElement {
 				preparedCandidate.Candidate_LastName = candidate.CandidateContact__r.LastName;
 				preparedCandidate.Candidate_Department = candidate.CandidateContact__r.Department;
 				preparedCandidate.Candidate_Description = candidate.Reason__c;
+				preparedCandidate.Candidate_Votes = candidate.VotesTotal__c;
 				preparedCandidates.push(preparedCandidate);
 			});
 			this.candidates.data = preparedCandidates;
@@ -39,6 +41,7 @@ export default class votingList extends LightningElement {
 		{ label: 'Last Name', fieldName: 'Candidate_LastName', type: 'text' },
 		{ label: 'Department', fieldName: 'Candidate_Department', type: 'text' },
 		{ label: 'Description', fieldName: 'Candidate_Description', type: 'text' },
+		{ label: 'Votes', fieldName: 'Candidate_Votes', type: 'text' },
 		{
 			type: "button",
 			typeAttributes: {
@@ -62,9 +65,9 @@ export default class votingList extends LightningElement {
 						title: "Voted for",
 						message: `Candidate: ${candidateName}`,
 						variant: "success"
-					})
+					})	
 				);
-
+				refreshApex(this.candidates);	
 			})
 			.catch((error) => {
 				this.dispatchEvent(
