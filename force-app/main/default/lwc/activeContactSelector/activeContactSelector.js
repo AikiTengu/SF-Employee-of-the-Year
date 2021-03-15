@@ -4,6 +4,7 @@ import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import FIRSTNAME_FIELD from "@salesforce/schema/Contact.FirstName";
 import LASTNAME_FIELD from "@salesforce/schema/Contact.LastName";
 import EMAIL_FIELD from "@salesforce/schema/Contact.Email";
+import DEPARTMENT_FIELD from "@salesforce/schema/Contact.Department";
 import getContacts from "@salesforce/apex/ContactController.getContacts";
 import setActiveContact from "@salesforce/apex/ContactController.setActiveContact";
 
@@ -12,6 +13,7 @@ export default class activeContactList extends LightningElement {
 		{ label: "First Name", fieldName: FIRSTNAME_FIELD.fieldApiName, type: "text" },
 		{ label: "Second Name", fieldName: LASTNAME_FIELD.fieldApiName, type: "text" },
 		{ label: "Email", fieldName: EMAIL_FIELD.fieldApiName, type: "text" },
+		{ label: "Department", fieldName: DEPARTMENT_FIELD.fieldApiName, type: "text" },
 
 		{
 			type: "button-icon",
