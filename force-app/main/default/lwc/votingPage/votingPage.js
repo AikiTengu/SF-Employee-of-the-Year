@@ -33,7 +33,7 @@ export default class votingList extends LightningElement {
 	}
 
 	@track columns = [
-		{ label: 'Candidate', fieldName: 'Candidate_Name', type: 'text' },
+		{ label: 'Candidate', fieldName: 'Candidate_Name', type: 'text'},
 		{ label: 'Nomination', fieldName: 'Nomination_Name', type: 'text' },
 		{ label: 'First Name', fieldName: 'Candidate_FirstName', type: 'text' },
 		{ label: 'Last Name', fieldName: 'Candidate_LastName', type: 'text' },
@@ -54,13 +54,6 @@ export default class votingList extends LightningElement {
          let candidateId = event.detail.row.Id;
 			 
 		 let candidateName = event.detail.row.Candidate_Name;
-		//   this.dispatchEvent(
-		//  	 			new ShowToastEvent({
-		//  	 				title: "Voted for",
-		//  	 				message: `Candidate: ${candidateName}`,
-		//  	 				variant: "success"
-		//  	 			})
-		//   );
 		
 		 setVote({ contactToVoteForId: candidateId })
 			.then(() => {

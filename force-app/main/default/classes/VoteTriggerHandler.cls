@@ -16,25 +16,30 @@ public class VoteTriggerHandler extends TriggerHandler {
                 FROM Contact 
                 WHERE Active__c = true ];
                 
-               List<Vote__c> votes = [
-                   SELECT Id
+               List<Vote__c> votes = [SELECT Id
                    FROM Vote__c 
                    WHERE Voter__c = :contact.Id];
                
                if (votes.size()>0) {
-                for(Vote__c vote : votes) {
-                    vote.addError('Your vote was not registered! You have already voted for somebody else!');
-                }
-               }
+                    for(Vote__c vote : votes) {
+                        vote.addError('Your vote was not registered! You have already voted for somebody else!');
+                    }
+               }           
            } 
        
            public override void  beforeDelete () {
                //Do magic 
            } 
+
            public override void  afterInsert () {
-       
-               //Do magic 
-           } 
+             Vote__c vote = newVotes.get(0);  
+             CandidateInNomination__c candidate = [SELECT Id, VotesTotal__c
+                FROM CandidateInNomination__c
+                WHERE Id = :vote.VoteFor__c];   
+             candidate.VotesTotal__c++;
+             update candidate;       
+          }
+        
            public override void afterUpdate() {
                 
            } 
