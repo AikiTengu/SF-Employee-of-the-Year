@@ -1,28 +1,11 @@
 import { LightningElement, track, wire } from "lwc";
 import { reduceErrors } from "c/ldsUtils";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
-import DESCRIPTION_FIELD from "@salesforce/schema/CandidateInNomination__c.Reason__c";
-import CANDIDATE_FIELD from "@salesforce/schema/CandidateInNomination__c.Name";
-import FIRSTNAME_FIELD from "@salesforce/schema/CandidateInNomination__c.CandidateContact__r.FirstName";
-import LASTNAME_FIELD from "@salesforce/schema/CandidateInNomination__c.CandidateContact__r.LastName";
 import getCandidates from "@salesforce/apex/CandidateController.getCandidates";
 
 export default class votingList extends LightningElement {
-	// columns = [
-    //     { label: "Candidate Name", fieldName: CANDIDATE_FIELD.fieldApiName, type: "text" },
-	// 	{ label: "First Name", fieldName: FIRSTNAME_FIELD.fieldApiName, type: "text" },
-	// 	{ label: "Last Name", fieldName: LASTNAME_FIELD.fieldApiName, type: "text" },
-	// 	{ label: "Description", fieldName: DESCRIPTION_FIELD.fieldApiName, type: "text" },
-		// {
-		// 	type: "button",
-		// 	typeAttributes: {
-		// 		variant: "brand-outline",				
-		// 		title: "Sel",
-		// 		label: "Vote",
-		// 		disabled: false
-		// 	}
-		// }
-	// ];
+
+	//Flattening data to display wired result 
 	@track candidates = [];
 
 	@wire(getCandidates)
@@ -35,11 +18,11 @@ export default class votingList extends LightningElement {
 				preparedCandidate.Candidate_Name = candidate.Name;
 				preparedCandidate.Candidate_FirstName = candidate.CandidateContact__r.FirstName;
 				preparedCandidate.Candidate_LastName = candidate.CandidateContact__r.LastName;
+				preparedCandidate.Candidate_Department = candidate.CandidateContact__r.Department;
 				preparedCandidate.Candidate_Description = candidate.Reason__c;
 				preparedCandidates.push(preparedCandidate);
 			});
 			this.candidates.data = preparedCandidates;
-			console.log(this.candidates.data);
 		}
 		if (result.error) {
 			this.error = result.error;
@@ -50,6 +33,7 @@ export default class votingList extends LightningElement {
 		{ label: 'Nomination', fieldName: 'Candidate_Name', type: 'text' },
 		{ label: 'First Name', fieldName: 'Candidate_FirstName', type: 'text' },
 		{ label: 'Last Name', fieldName: 'Candidate_LastName', type: 'text' },
+		{ label: 'Department', fieldName: 'Candidate_Department', type: 'text' },
 		{ label: 'Description', fieldName: 'Candidate_Description', type: 'text' },
 		{
 			type: "button",
