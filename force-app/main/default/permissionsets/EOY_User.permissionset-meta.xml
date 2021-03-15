@@ -22,11 +22,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Vote__c.VoteFor_del__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>Vote__c.Voter__c</field>
         <readable>true</readable>
     </fieldPermissions>
