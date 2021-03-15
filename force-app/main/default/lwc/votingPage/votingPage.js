@@ -36,12 +36,12 @@ export default class votingList extends LightningElement {
 
 	@track columns = [
 		{ label: 'Candidate', fieldName: 'Candidate_Name', type: 'text'},
-		{ label: 'Nomination', fieldName: 'Nomination_Name', type: 'text' },
-		{ label: 'First Name', fieldName: 'Candidate_FirstName', type: 'text' },
-		{ label: 'Last Name', fieldName: 'Candidate_LastName', type: 'text' },
+		{ label: 'Nomination', fieldName: 'Nomination_Name', type: 'text', initialWidth: 180 },
+		{ label: 'First Name', fieldName: 'Candidate_FirstName', type: 'text', initialWidth: 120 },
+		{ label: 'Last Name', fieldName: 'Candidate_LastName', type: 'text', initialWidth: 120 },
 		{ label: 'Department', fieldName: 'Candidate_Department', type: 'text' },
-		{ label: 'Description', fieldName: 'Candidate_Description', type: 'text' },
-		{ label: 'Votes', fieldName: 'Candidate_Votes', type: 'text' },
+		{ label: 'Description', fieldName: 'Candidate_Description', type: 'text', initialWidth: 280, wrapText: true },
+		{ label: 'Votes', fieldName: 'Candidate_Votes', type: 'text', initialWidth: 80 },
 		{
 			type: "button",
 			typeAttributes: {
