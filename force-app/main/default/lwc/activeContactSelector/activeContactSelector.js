@@ -40,8 +40,8 @@ export default class activeContactList extends LightningElement {
 			.then(() => {
 				this.dispatchEvent(
 					new ShowToastEvent({
-						title: "Active contact selected",
-						message: `Contact name: ${contactName}`,
+						title: `${contactName} selected`,
+						message: `Active contact selected`,
 						variant: "success"
 					})
 				);

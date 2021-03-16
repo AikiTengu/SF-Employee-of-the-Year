@@ -17,9 +17,7 @@ public class VoteTH extends TriggerHandler {
 
 		if (votes.size() > 0) {
 			for (Vote__c vote : votes) {
-				vote.addError(
-					new DmlException('Your vote was not registered! You have already voted for somebody else!')
-				);
+				vote.addError('Your vote was not registered! You have already voted for somebody else!');
 			}
 		}
 	}
@@ -48,19 +46,15 @@ public class VoteTH extends TriggerHandler {
 		//Do magic
 	}
 
-	private static Contact getActiveContact(){
+	private static Contact getActiveContact() {
 		return [SELECT Id FROM Contact WHERE Active__c = TRUE LIMIT 1];
 	}
 
-	private static List<Vote__c> getVotesByVoterID(String VoterId){
+	private static List<Vote__c> getVotesByVoterID(String VoterId) {
 		return [SELECT Id FROM Vote__c WHERE Voter__c = :VoterId];
 	}
 
 	private static CandidateInNomination__c getCandidateVotedForById(String VotedForId) {
-		return [
-			SELECT Id, VotesTotal__c
-			FROM CandidateInNomination__c
-			WHERE Id = :VotedForId
-		];
+		return [SELECT Id, VotesTotal__c FROM CandidateInNomination__c WHERE Id = :VotedForId];
 	}
 }

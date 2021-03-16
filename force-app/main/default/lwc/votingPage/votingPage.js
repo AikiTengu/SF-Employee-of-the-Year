@@ -3,12 +3,10 @@ import { reduceErrors } from "c/ldsUtils";
 import { refreshApex } from "@salesforce/apex";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import getCandidates from "@salesforce/apex/CandidateController.getCandidates";
-import setVote from "@salesforce/apex/CandidateController.setVote";
+import putVote from "@salesforce/apex/CandidateController.putVote";
 import getActiveContact from "@salesforce/apex/ContactController.getActiveContact";
 
 export default class votingList extends LightningElement {
-	//getting active contact
-	@wire(getActiveContact) activeContact;
 	
 	//Flattening data to display wired result
 	@track candidates = [];
@@ -58,25 +56,23 @@ export default class votingList extends LightningElement {
 	fireSelRow(event) {
 		let candidateId = event.detail.row.Id;
 		let candidateName = event.detail.row.Candidate_Name;
-		let contactName = this.activeContact.data.FirstName + " " + this.activeContact.data.LastName; 
 
-		setVote({ contactToVoteForId: candidateId })
-			.then(() => {
+		putVote({ contactToVoteForId: candidateId })
+			.then((voterName) => {
 				this.dispatchEvent(
 					new ShowToastEvent({
-						title: `${contactName} voted for`,
+						title: `${voterName} voted for`,
 						message: `Candidate: ${candidateName}`,
 						variant: "success"
 					})
 				);
 				refreshApex(this.candidates);
 			})
-			.catch((event) => {
-				//throw Aura Handler Exception or subscribe to an event
+			.catch((error) => {
 				this.dispatchEvent(
 					new ShowToastEvent({
 						title: `Error voting for ${candidateName}`,
-						message: `${contactName}, your vote was not registered as you have voted already!`,
+						message: error.body.message,
 						variant: "error"
 					})
 				);
