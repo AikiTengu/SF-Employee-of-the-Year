@@ -11,10 +11,12 @@
     <formFactors>Large</formFactors>
     <isNavAutoTempTabsDisabled>false</isNavAutoTempTabsDisabled>
     <isNavPersonalizationDisabled>false</isNavPersonalizationDisabled>
-    <label>EOY Nomination Box</label>
+    <label>Employee of the Year</label>
     <navType>Standard</navType>
+    <tabs>ActiveContactSelector</tabs>
     <tabs>Nomination__c</tabs>
     <tabs>CandidateInNomination__c</tabs>
+    <tabs>VotingPage</tabs>
     <uiType>Lightning</uiType>
     <utilityBar>Candidate_Box_UtilityBar</utilityBar>
 </CustomApplication>
