@@ -28,11 +28,18 @@ public class CanInNomTriggerHandler extends TriggerHandler {
         }
         else for(CandidateInNomination__c candidate : newCandidates) {
             candidate.PushedBy__c = contact.Id;
+            candidate.VotesTotal__c = 0;
         }
     } 
 
     public override void  beforeDelete () {
-        //Do magic 
+        CandidateInNomination__c candidate = oldCandidates.get(0);
+        List<Vote__c> votes = [SELECT Id 
+        FROM Vote__c
+        WHERE VoteFor__c = :candidate.Id];
+        for (Vote__c vote : votes) {
+            delete vote;
+        }
     } 
     public override void  afterInsert () {
 
@@ -42,8 +49,9 @@ public class CanInNomTriggerHandler extends TriggerHandler {
          
     } 
     public override void  afterDelete () {
-        //Do magic 
+
     }  
+
     public override void   afterUndelete  () {
         //Do magic 
     }
