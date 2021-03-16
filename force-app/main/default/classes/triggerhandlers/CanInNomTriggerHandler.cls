@@ -37,9 +37,7 @@ public class CanInNomTriggerHandler extends TriggerHandler {
         List<Vote__c> votes = [SELECT Id 
         FROM Vote__c
         WHERE VoteFor__c = :candidate.Id];
-        for (Vote__c vote : votes) {
-            delete vote;
-        }
+        delete votes;
     } 
     public override void  afterInsert () {
 

@@ -12,7 +12,7 @@ public class VoteTriggerHandler extends TriggerHandler {
            } 
        
            public override void  beforeInsert () {
-               Contact contact = [SELECT Id
+                Contact contact = [SELECT Id
                 FROM Contact 
                 WHERE Active__c = true ];
                 
@@ -22,9 +22,10 @@ public class VoteTriggerHandler extends TriggerHandler {
                
                if (votes.size()>0) {
                     for(Vote__c vote : votes) {
-                        vote.addError('Your vote was not registered! You have already voted for somebody else!');
+                        vote.addError(new DmlException('Your vote was not registered! You have already voted for somebody else!'));
+                        
                     }
-               }           
+               }          
            } 
        
            public override void  beforeDelete () {
