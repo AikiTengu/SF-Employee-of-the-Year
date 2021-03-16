@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ThisIsMasterCopy__c</fullName>
+    <defaultValue>true</defaultValue>
+    <description>Check if this is the main copy of all similar candidates in this nomination</description>
+    <externalId>false</externalId>
+    <label>ThisIsMasterCopy</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

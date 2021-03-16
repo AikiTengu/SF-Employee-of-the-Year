@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MasterCopyLink__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>Self-lookup for master copy</description>
+    <externalId>false</externalId>
+    <label>MasterCopyLink</label>
+    <referenceTo>CandidateInNomination__c</referenceTo>
+    <relationshipLabel>CandidatesInNominations</relationshipLabel>
+    <relationshipName>CandidatesInNominations</relationshipName>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>
