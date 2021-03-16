@@ -13,14 +13,11 @@ public class CandidateInNominationTH extends TriggerHandler {
 
 	public override void beforeInsert() {
 		Contact contact = getActiveContact();
-
 		CandidateInNomination__c candidateCheck = newCandidates.get(0);
-		List<CandidateInNomination__c> candidateChecklist = [
-			SELECT Id
-			FROM CandidateInNomination__c
-			WHERE PushedBy__c = :contact.Id
-			AND Nomination__c = :candidateCheck.Nomination__c
-		];
+		List<CandidateInNomination__c> candidateChecklist = getCandidateCheckList(
+			contact.Id,
+			candidateCheck.Nomination__c
+		);
 
 		if (candidateChecklist.size() > MAX_CANDIDATES) {
 			for (CandidateInNomination__c candidate : newCandidates) {
@@ -39,6 +36,7 @@ public class CandidateInNominationTH extends TriggerHandler {
 		if (!votes.isEmpty())
 			delete votes;
 	}
+	
 	public override void afterInsert() {
 		//Do magic
 	}
@@ -51,7 +49,15 @@ public class CandidateInNominationTH extends TriggerHandler {
 		//Do magic
 	}
 
-	private static Contact getActiveContact(){
+	private static Contact getActiveContact() {
 		return [SELECT Id FROM Contact WHERE Active__c = TRUE LIMIT 1];
+	}
+
+	private static List<CandidateInNomination__c> getCandidateCheckList(String ContactId, String NominationId) {
+		return [
+			SELECT Id
+			FROM CandidateInNomination__c
+			WHERE PushedBy__c = :ContactId AND Nomination__c = :NominationId
+		];
 	}
 }
