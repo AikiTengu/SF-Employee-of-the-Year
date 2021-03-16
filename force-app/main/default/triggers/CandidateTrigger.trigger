@@ -7,5 +7,5 @@ trigger CandidateTrigger on CandidateInNomination__c (
     after delete,
     after undelete
   ) {
-    new CanInNomTriggerHandler().run();
+    new CandidateInNominationTH().run();
 }

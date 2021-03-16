@@ -1,0 +1,23 @@
+{
+  "name": "if-119",
+  "version": "1.0.0",
+  "description": "This guide helps Salesforce developers who are new to Visual Studio Code go from zero to a deployed app using Salesforce Extensions for VS Code and Salesforce CLI.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Zerony/if-119.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Zerony/if-119/issues"
+  },
+  "homepage": "https://github.com/Zerony/if-119#readme",
+  "devDependencies": {
+    "prettier": "2.2.1",
+    "prettier-plugin-apex": "1.8.0"
+  }
+}

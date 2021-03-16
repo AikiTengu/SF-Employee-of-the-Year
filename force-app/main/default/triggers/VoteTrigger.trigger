@@ -7,5 +7,5 @@ trigger VoteTrigger on Vote__c (
     after delete,
     after undelete
   ) {
-    new VoteTriggerHandler().run();
+    new VoteTH().run();
 }
