@@ -2,7 +2,7 @@ public class CandidateInNominationTH extends TriggerHandler {
 	private List<CandidateInNomination__c> newCandidates;
 	private List<CandidateInNomination__c> oldCandidates;
 	public static final Integer MAX_CANDIDATES = 2;
-	//refactor name
+
 	public CandidateInNominationTH() {
 		this.newCandidates = Trigger.new;
 		this.oldCandidates = Trigger.old;
@@ -19,7 +19,7 @@ public class CandidateInNominationTH extends TriggerHandler {
 			FROM CandidateInNomination__c
 			WHERE PushedBy__c = :contact.Id
 		];
-
+		//triggers for 3 candidates in general,
 		if (candidateChecklist.size() > MAX_CANDIDATES) {
 			for (CandidateInNomination__c candidate : newCandidates) {
 				candidate.addError('Cannot add Candidate in this nomination! Already 3 candidates from this user!');
@@ -33,9 +33,9 @@ public class CandidateInNominationTH extends TriggerHandler {
 	}
 
 	public override void beforeDelete() {
-		//CandidateInNomination__c candidate = oldCandidates.get(0);
 		List<Vote__c> votes = [SELECT Id FROM Vote__c WHERE VoteFor__c IN :oldCandidates]; //safer to enwrap in new List<Vote__c>
-		delete votes;
+		if (!votes.isEmpty())
+			delete votes;
 	}
 	public override void afterInsert() {
 		//Do magic

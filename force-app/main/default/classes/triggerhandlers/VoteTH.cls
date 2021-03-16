@@ -36,7 +36,11 @@ public class VoteTH extends TriggerHandler {
 			WHERE Id = :vote.VoteFor__c
 		];
 		candidate.VotesTotal__c++;
-		update candidate;
+		try {
+			update candidate;
+		} catch (DmlException e) {
+			throw new DmlException(e.getMessage());
+		}
 	}
 
 	public override void afterUpdate() {
