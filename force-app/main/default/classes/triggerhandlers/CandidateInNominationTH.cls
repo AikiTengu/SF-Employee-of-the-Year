@@ -14,10 +14,12 @@ public class CandidateInNominationTH extends TriggerHandler {
 	public override void beforeInsert() {
 		Contact contact = [SELECT Id FROM Contact WHERE Active__c = TRUE LIMIT 1];
 
+		CandidateInNomination__c candidateCheck = newCandidates.get(0);
 		List<CandidateInNomination__c> candidateChecklist = [
-			SELECT Id, Nomination__c
+			SELECT Id
 			FROM CandidateInNomination__c
 			WHERE PushedBy__c = :contact.Id
+			AND Nomination__c = :candidateCheck.Nomination__c
 		];
 		//triggers for 3 candidates in general,
 		if (candidateChecklist.size() > MAX_CANDIDATES) {

@@ -69,11 +69,11 @@ export default class votingList extends LightningElement {
 				);
 				refreshApex(this.candidates);	
 			})
-			.catch((error) => {
+			.catch((event) => { //throw Aura Handler Exception or subscribe to an event
 				this.dispatchEvent(
 					new ShowToastEvent({
 						title: `Error voting for ${candidateName}`,
-						message: error.body.message,
+						message: `Your vote was not registered as you have voted already !`,
 						variant: "error"
 					})
 				);
