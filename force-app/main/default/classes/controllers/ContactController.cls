@@ -24,12 +24,17 @@ public inherited sharing class ContactController {
 		}
 	}
 
+	@AuraEnabled(cacheable=true)
+	public static Contact getActiveContact(){
+		return getActiveContactList().get(0);
+	}
+
 	private static List<Contact> getFullContactList() {
 		return [SELECT FirstName, LastName, Email, Department FROM Contact ORDER BY Name];
 	}
 
 	private static List<Contact> getActiveContactList() {
-		return [SELECT Id FROM Contact WHERE Active__c = TRUE];
+		return [SELECT FirstName, LastName FROM Contact WHERE Active__c = TRUE];
 	}
 
 	private static Contact getContactById(String Id) {

@@ -11,9 +11,9 @@ public class VoteTH extends TriggerHandler {
 	}
 
 	public override void beforeInsert() {
-		Contact contact = [SELECT Id FROM Contact WHERE Active__c = TRUE];
+		Contact contact = getActiveContact();
 
-		List<Vote__c> votes = [SELECT Id FROM Vote__c WHERE Voter__c = :contact.Id];
+		List<Vote__c> votes = getVotesByVoterID(contact.Id);
 
 		if (votes.size() > 0) {
 			for (Vote__c vote : votes) {
@@ -30,11 +30,7 @@ public class VoteTH extends TriggerHandler {
 
 	public override void afterInsert() {
 		Vote__c vote = newVotes.get(0);
-		CandidateInNomination__c candidate = [
-			SELECT Id, VotesTotal__c
-			FROM CandidateInNomination__c
-			WHERE Id = :vote.VoteFor__c
-		];
+		CandidateInNomination__c candidate = getCandidateVotedForById(vote.VoteFor__c);
 		candidate.VotesTotal__c++;
 		try {
 			update candidate;
@@ -50,5 +46,21 @@ public class VoteTH extends TriggerHandler {
 	}
 	public override void afterUndelete() {
 		//Do magic
+	}
+
+	private static Contact getActiveContact(){
+		return [SELECT Id FROM Contact WHERE Active__c = TRUE LIMIT 1];
+	}
+
+	private static List<Vote__c> getVotesByVoterID(String VoterId){
+		return [SELECT Id FROM Vote__c WHERE Voter__c = :VoterId];
+	}
+
+	private static CandidateInNomination__c getCandidateVotedForById(String VotedForId) {
+		return [
+			SELECT Id, VotesTotal__c
+			FROM CandidateInNomination__c
+			WHERE Id = :VotedForId
+		];
 	}
 }
