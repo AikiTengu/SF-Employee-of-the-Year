@@ -15,9 +15,9 @@ public inherited sharing class ContactController {
 		} catch (DmlException e) {
 			throw new DmlException(e.getMessage());
 		}
-			Contact contact = getContactById(contactToSelectId);
-			contact.Active__c = true;
-        try {    
+		Contact contact = getContactById(contactToSelectId);
+		contact.Active__c = true;
+		try {
 			update contact;
 		} catch (DmlException e) {
 			throw new DmlException(e.getMessage());
@@ -25,7 +25,7 @@ public inherited sharing class ContactController {
 	}
 
 	private static List<Contact> getFullContactList() {
-		return  [SELECT FirstName, LastName, Email, Department FROM Contact ORDER BY Name];
+		return [SELECT FirstName, LastName, Email, Department FROM Contact ORDER BY Name];
 	}
 
 	private static List<Contact> getActiveContactList() {

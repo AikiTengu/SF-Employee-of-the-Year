@@ -6,12 +6,11 @@ public inherited sharing class CandidateController {
 
 	@AuraEnabled
 	public static void setVote(String contactToVoteForId) {
-		Contact contact = [SELECT Id FROM Contact WHERE Active__c = TRUE];
-		
-			Vote__c vote = new Vote__c();
-			vote.Voter__c = contact.Id;
-			vote.VoteFor__c = contactToVoteForId;
-        try {    
+		Contact contact = getActiveContact();
+		Vote__c vote = new Vote__c();
+		vote.Voter__c = contact.Id;
+		vote.VoteFor__c = contactToVoteForId;
+		try {
 			insert vote;
 		} catch (DmlException e) {
 			// dmlexception
@@ -33,5 +32,9 @@ public inherited sharing class CandidateController {
 			WHERE Approved__c = TRUE
 			ORDER BY Name
 		];
+	}
+
+	private static Contact getActiveContact() {
+		return [SELECT Id FROM Contact WHERE Active__c = TRUE LIMIT 1];
 	}
 }
