@@ -1,5 +1,8 @@
-@isTest(SeeAllData=true)
-private class TestCanInNomTrigger {
+@isTest //do not use this @AikiTengu
+
+
+//employ @TestSetup and create necessary data here using testutils/populate contact, will have to add isActive_true in testutils
+private class CandidateInNominationTHTest {
     @isTest static void TestInsertFreshNewCandidate() {
         // Test inserting fresh candidate on fresh pushing contact
         //Selecting active contact
