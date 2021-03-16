@@ -32,11 +32,11 @@ public class CandidateInNominationTH extends TriggerHandler {
 	}
 
 	public override void beforeDelete() {
-		List<Vote__c> votes = [SELECT Id FROM Vote__c WHERE VoteFor__c IN :oldCandidates]; //safer to enwrap in new List<Vote__c>
+		List<Vote__c> votes = getOldVotes(oldCandidates); //safer to enwrap in new List<Vote__c>
 		if (!votes.isEmpty())
 			delete votes;
 	}
-	
+
 	public override void afterInsert() {
 		//Do magic
 	}
@@ -59,5 +59,9 @@ public class CandidateInNominationTH extends TriggerHandler {
 			FROM CandidateInNomination__c
 			WHERE PushedBy__c = :ContactId AND Nomination__c = :NominationId
 		];
+	}
+
+	private static List<Vote__c> getOldVotes(List<CandidateInNomination__c> oldCandidates) {
+		return [SELECT Id FROM Vote__c WHERE VoteFor__c IN :oldCandidates];
 	}
 }
