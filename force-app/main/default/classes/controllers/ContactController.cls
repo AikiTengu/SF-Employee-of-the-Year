@@ -15,7 +15,7 @@ public inherited sharing class ContactController {
 		} catch (DmlException e) {
 			throw new DmlException(e.getMessage());
 		}
-			Contact contact = [SELECT Id FROM Contact WHERE Id = :contactToSelectId];
+			Contact contact = getContactById(contactToSelectId);
 			contact.Active__c = true;
         try {    
 			update contact;
@@ -30,5 +30,9 @@ public inherited sharing class ContactController {
 
 	private static List<Contact> getActiveContactList() {
 		return [SELECT Id FROM Contact WHERE Active__c = TRUE];
+	}
+
+	private static Contact getContactById(String Id) {
+		return [SELECT Id FROM Contact WHERE Id = :Id];
 	}
 }
