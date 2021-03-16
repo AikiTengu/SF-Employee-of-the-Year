@@ -1,19 +1,7 @@
 public inherited sharing class CandidateController {
 	@AuraEnabled(cacheable=true)
 	public static List<CandidateInNomination__c> getCandidates() {
-		return [
-			SELECT
-				Name,
-				Nomination__r.Name,
-				CandidateContact__r.FirstName,
-				CandidateContact__r.LastName,
-				CandidateContact__r.Department,
-				Reason__c,
-				VotesTotal__c
-			FROM CandidateInNomination__c
-			WHERE Approved__c = TRUE
-			ORDER BY Name
-		];
+		return getApprovedCandidates();
 	}
 
 	@AuraEnabled
@@ -29,5 +17,21 @@ public inherited sharing class CandidateController {
 			// dmlexception
 			throw new DmlException(e.getMessage()); //dmlmessage
 		}
+	}
+
+	private static List<CandidateInNomination__c> getApprovedCandidates() {
+		return [
+			SELECT
+				Name,
+				Nomination__r.Name,
+				CandidateContact__r.FirstName,
+				CandidateContact__r.LastName,
+				CandidateContact__r.Department,
+				Reason__c,
+				VotesTotal__c
+			FROM CandidateInNomination__c
+			WHERE Approved__c = TRUE
+			ORDER BY Name
+		];
 	}
 }

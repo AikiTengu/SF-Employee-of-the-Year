@@ -1,12 +1,12 @@
 public inherited sharing class ContactController {
 	@AuraEnabled(cacheable=true)
 	public static List<Contact> getContacts() {
-		return [SELECT FirstName, LastName, Email, Department FROM Contact ORDER BY Name];
+		return getFullContactList();
 	}
 
 	@AuraEnabled
 	public static void setActiveContact(String contactToSelectId) {
-		List<Contact> contactList = [SELECT Id FROM Contact WHERE Active__c = TRUE];
+		List<Contact> contactList = getActiveContactList();
 		for (Contact contact : contactList) {
 			contact.Active__c = false;
 		}
@@ -22,5 +22,13 @@ public inherited sharing class ContactController {
 		} catch (DmlException e) {
 			throw new DmlException(e.getMessage());
 		}
+	}
+
+	private static List<Contact> getFullContactList() {
+		return  [SELECT FirstName, LastName, Email, Department FROM Contact ORDER BY Name];
+	}
+
+	private static List<Contact> getActiveContactList() {
+		return [SELECT Id FROM Contact WHERE Active__c = TRUE];
 	}
 }
