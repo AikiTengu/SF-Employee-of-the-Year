@@ -12,7 +12,7 @@ public class CandidateInNominationTH extends TriggerHandler {
 	}
 
 	public override void beforeInsert() {
-		Contact contact = [SELECT Id FROM Contact WHERE Active__c = TRUE LIMIT 1];
+		Contact contact = getActiveContact();
 
 		CandidateInNomination__c candidateCheck = newCandidates.get(0);
 		List<CandidateInNomination__c> candidateChecklist = [
@@ -21,7 +21,7 @@ public class CandidateInNominationTH extends TriggerHandler {
 			WHERE PushedBy__c = :contact.Id
 			AND Nomination__c = :candidateCheck.Nomination__c
 		];
-		//triggers for 3 candidates in general,
+
 		if (candidateChecklist.size() > MAX_CANDIDATES) {
 			for (CandidateInNomination__c candidate : newCandidates) {
 				candidate.addError('Cannot add Candidate in this nomination! Already 3 candidates from this user!');
@@ -49,5 +49,9 @@ public class CandidateInNominationTH extends TriggerHandler {
 
 	public override void afterUndelete() {
 		//Do magic
+	}
+
+	private static Contact getActiveContact(){
+		return [SELECT Id FROM Contact WHERE Active__c = TRUE LIMIT 1];
 	}
 }
