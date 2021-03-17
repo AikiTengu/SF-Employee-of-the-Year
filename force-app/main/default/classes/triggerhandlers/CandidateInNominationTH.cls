@@ -18,7 +18,7 @@ public class CandidateInNominationTH extends TriggerHandler {
 			contact.Id,
 			candidateCheck.Nomination__c
 		);
-
+		//Checking for maximum of 3 candidates from one contact in one category
 		if (candidateChecklist.size() > MAX_CANDIDATES) {
 			for (CandidateInNomination__c candidate : newCandidates) {
 				candidate.addError('Cannot add Candidate in this nomination! Already 3 candidates from this user!');
@@ -30,6 +30,7 @@ public class CandidateInNominationTH extends TriggerHandler {
 			}
 		}
 
+		//automation of self-lookup part for copies of same candidate in same nomination
 		List<CandidateInNomination__c> candidateMasters = getCandidateMasters(
 			candidateCheck.CandidateContact__c,
 			candidateCheck.Nomination__c

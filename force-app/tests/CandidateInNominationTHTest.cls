@@ -43,31 +43,9 @@ private class CandidateInNominationTHTest {
 
 	@isTest
 	static void TestInsertingFourthCandidate() {
-		// Test inserting fourth candidate on same pushing contact
-		//Selecting active contact
-		Contact oldActiveContact = [SELECT Id FROM Contact WHERE Active__c = TRUE].get(0);
+		Contact testContact = [SELECT Id, FirstName, LastName FROM Contact WHERE Active__c = true LIMIT 1];
 
-		oldActiveContact.Active__c = false;
-		update oldActiveContact;
-
-		//Ensure that the contact has never pushed any candidate yet
-		Contact testContact = [
-				SELECT Id
-				FROM Contact
-				WHERE Id NOT IN (SELECT PushedBy__c FROM CandidateInNomination__c)
-			]
-			.get(0);
-
-		testContact.Active__c = true;
-		update testContact;
-
-		//Selecting actual campaign for test purposes
-		Nomination__c testNomination = [
-				SELECT Id
-				FROM Nomination__c
-				WHERE Campaign__c IN (SELECT Id FROM Campaign WHERE Name = 'COV Season 2')
-			]
-			.get(0);
+		Nomination__c testNomination = [SELECT Id FROM Nomination__c WHERE Campaign__r.IsActive = true LIMIT 1];
 
 		//Setting up 3 proxy candidates
 		List<CandidateInNomination__c> testCandidates = new List<CandidateInNomination__c>();
@@ -80,7 +58,9 @@ private class CandidateInNominationTHTest {
 			candidate.Reason__c = 'TestReason' + i;
 			testCandidates.add(candidate);
 		}
+		
 		insert testCandidates;
+		
 
 		List<CandidateInNomination__c> assertCandidates = [
 			SELECT Id, Name
