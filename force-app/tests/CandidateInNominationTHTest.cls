@@ -31,7 +31,7 @@ private class CandidateInNominationTHTest {
 		System.assert(result.isSuccess());
 
 		CandidateInNomination__c assertCandidate = [
-				SELECT Id, Name, PushedBy__c
+				SELECT Id, Name, PushedBy__c, ThisIsMasterCopy__c
 				FROM CandidateInNomination__c
 				WHERE Name = :testCandidate.Name
 			]
@@ -39,6 +39,7 @@ private class CandidateInNominationTHTest {
 
 		System.assertEquals(testCandidate.Name, assertCandidate.Name);
 		System.assertEquals(testCandidate.PushedBy__c, assertCandidate.PushedBy__c);
+		System.assertEquals(true, assertCandidate.ThisIsMasterCopy__c);
 	}
 
 	@isTest
@@ -92,5 +93,55 @@ private class CandidateInNominationTHTest {
 			'Cannot add Candidate in this nomination! Already 3 candidates from this user!',
 			result.getErrors()[0].getMessage()
 		);
+	}
+
+	@isTest
+	static void TestInsertCandidateCopy() {
+		Contact testContact = [SELECT Id, FirstName, LastName FROM Contact WHERE Active__c = true LIMIT 1];
+
+		Nomination__c testNomination = [SELECT Id FROM Nomination__c WHERE Campaign__r.IsActive = true LIMIT 1];
+
+		CandidateInNomination__c testCandidateMaster = new CandidateInNomination__c();
+		testCandidateMaster.Name = 'TestCandidateMaster';
+		testCandidateMaster.CandidateContact__c = testContact.Id;
+		testCandidateMaster.Nomination__c = testNomination.Id;
+		testCandidateMaster.PushedBy__c = testCandidateMaster.CandidateContact__c;
+		testCandidateMaster.Reason__c = 'TestReasonMaster';
+
+		insert testCandidateMaster;
+
+		System.assertEquals(
+			[SELECT Id, Name FROM CandidateInNomination__c WHERE ThisIsMasterCopy__c = TRUE].size(),
+			1
+		);
+
+		CandidateInNomination__c testCandidateCopy = new CandidateInNomination__c();
+		testCandidateCopy.Name = 'TestCandidateCopy';
+		testCandidateCopy.CandidateContact__c = testContact.Id;
+		testCandidateCopy.Nomination__c = testNomination.Id;
+		testCandidateCopy.PushedBy__c = testCandidateMaster.CandidateContact__c;
+		testCandidateCopy.Reason__c = 'TestCandidateCopy';
+
+		
+		//Perform test
+		Test.startTest();
+		Database.SaveResult result = Database.insert(TestCandidateCopy, false);
+		Test.stopTest();
+
+		//Assertion
+
+		System.assert(result.isSuccess());
+
+		CandidateInNomination__c assertCandidate = [
+				SELECT Id, Name, PushedBy__c, ThisIsMasterCopy__c, MasterCopyLink__c
+				FROM CandidateInNomination__c
+				WHERE Name = :testCandidateCopy.Name
+			]
+			.get(0);
+
+		System.assertEquals(assertCandidate.Name, testCandidateCopy.Name);
+		System.assertEquals(assertCandidate.ThisIsMasterCopy__c, false);
+		System.assertEquals(assertCandidate.MasterCopyLink__c, testCandidateMaster.Id);
+
 	}
 }
