@@ -68,7 +68,7 @@ export default class votingList extends LightningElement {
 				);
 				refreshApex(this.candidates);
 			})
-			.catch((error) => {
+			.catch((error) => { 
 				this.dispatchEvent(
 					new ShowToastEvent({
 						title: `Error voting for ${candidateName}`,

@@ -18,7 +18,7 @@ public class VoteTH extends TriggerHandler {
 		if (votes.size() > 0) {
 			for (Vote__c vote : votes) {
 				vote.addError('Your vote was not registered! You have already voted for somebody else!');
-			}
+		}
 		}
 	}
 

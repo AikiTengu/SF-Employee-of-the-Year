@@ -29,10 +29,26 @@ public class CandidateInNominationTH extends TriggerHandler {
 				candidate.VotesTotal__c = 0;
 			}
 		}
+
+		List<CandidateInNomination__c> candidateMasters = getCandidateMasters(
+			candidateCheck.CandidateContact__c,
+			candidateCheck.Nomination__c
+		);
+
+		if (candidateMasters.size() == 0) {
+			for (CandidateInNomination__c candidate : newCandidates) {
+				candidate.ThisIsMasterCopy__c = true;
+			}
+		} else {
+			for (CandidateInNomination__c candidate : newCandidates) {
+				candidate.ThisIsMasterCopy__c = false;
+				candidate.MasterCopyLink__c = candidateMasters.get(0).Id;
+			}
+		}
 	}
 
 	public override void beforeDelete() {
-		List<Vote__c> votes = getOldVotes(oldCandidates); //safer to enwrap in new List<Vote__c>
+		List<Vote__c> votes = getOldVotes(oldCandidates);
 		if (!votes.isEmpty())
 			delete votes;
 	}
@@ -63,5 +79,13 @@ public class CandidateInNominationTH extends TriggerHandler {
 
 	private static List<Vote__c> getOldVotes(List<CandidateInNomination__c> oldCandidates) {
 		return [SELECT Id FROM Vote__c WHERE VoteFor__c IN :oldCandidates];
+	}
+
+	private static List<CandidateInNomination__c> getCandidateMasters(String ContactId, String NominationId) {
+		return [
+			SELECT Id
+			FROM CandidateInNomination__c
+			WHERE CandidateContact__c = :ContactId AND Nomination__c = :NominationId AND ThisIsMasterCopy__c = TRUE
+		];
 	}
 }

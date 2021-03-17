@@ -12,12 +12,12 @@ public inherited sharing class CandidateController {
 		vote.VoteFor__c = contactToVoteForId;
 		try {
 			insert vote;
-		} catch (Exception e) {
+		} catch (Exception e) { 
 			throw new AuraHandledException(
-				contact.FirstName +
-				' ' +
-				contact.LastName +
-				'!! your vote was not registered as you have voted already!'
+				 contact.FirstName + 
+				 ' ' +
+				 contact.LastName +
+				 '!! your vote was not registered as you have voted already!'
 			);
 		}
 		String result = contact.FirstName + ' ' + contact.LastName;
