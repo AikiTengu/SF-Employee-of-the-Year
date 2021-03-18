@@ -18,7 +18,7 @@ public class VoteTH extends TriggerHandler {
 		if (votes.size() > 0) {
 			for (Vote__c vote : votes) {
 				vote.addError('Your vote was not registered! You have already voted for somebody else!');
-		}
+			}
 		}
 	}
 
@@ -34,6 +34,16 @@ public class VoteTH extends TriggerHandler {
 			update candidate;
 		} catch (DmlException e) {
 			throw new DmlException(e.getMessage());
+		}
+		//need to add vote to the master link as well
+		if (candidate.ThisIsMasterCopy__c == false) {
+			CandidateInNomination__c masterCandidate = getCandidateVotedForById(candidate.MasterCopyLink__c);
+			masterCandidate.VotesTotal__c++;
+			try {
+				update masterCandidate;
+			} catch (DmlException e) {
+				throw new DmlException(e.getMessage());
+			}
 		}
 	}
 
@@ -55,6 +65,10 @@ public class VoteTH extends TriggerHandler {
 	}
 
 	private static CandidateInNomination__c getCandidateVotedForById(String VotedForId) {
-		return [SELECT Id, VotesTotal__c FROM CandidateInNomination__c WHERE Id = :VotedForId];
+		return [
+			SELECT Id, VotesTotal__c, ThisIsMasterCopy__c, MasterCopyLink__c
+			FROM CandidateInNomination__c
+			WHERE Id = :VotedForId
+		];
 	}
 }
