@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <aggregateTypes>Maximum</aggregateTypes>
+        <field>CandidateInNomination__c$VotesTotal__c</field>
+    </columns>
+    <columns>
+        <field>CandidateInNomination__c$Name</field>
+    </columns>
+    <columns>
+        <field>CandidateInNomination__c$Reason__c</field>
+    </columns>
+    <description>Final Competition Report</description>
+    <filter>
+        <criteriaItems>
+            <column>CandidateInNomination__c$Approved__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>1</value>
+        </criteriaItems>
+    </filter>
+    <format>Summary</format>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>CandidateInNomination__c$Nomination__c</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>CandidateInNomination__c$CandidateContact__c</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>Copy of New EOYWinners Report</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>EOYWinners__c</reportType>
+    <scope>organization</scope>
+    <showDetails>true</showDetails>
+    <showGrandTotal>false</showGrandTotal>
+    <showSubTotals>false</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>CandidateInNomination__c$CreatedDate</dateColumn>
+        <interval>INTERVAL_CURRENT</interval>
+    </timeFrameFilter>
+</Report>
