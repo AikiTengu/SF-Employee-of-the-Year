@@ -1,18 +1,16 @@
 @isTest
 private class CandidateInNominationTHTest {
-
-	
 	@testSetup
 	static void makeData() {
 		List<Contact> testContacts = CandidateInNominationTestFactory.createContacts(20);
-		List<Nomination__c> testNominations = CandidateInNominationTestFactory.createNominationsWithCampaign(5);		
+		List<Nomination__c> testNominations = CandidateInNominationTestFactory.createNominationsWithCampaign(5);
 	}
 
 	@isTest
 	static void TestInsertFreshNewCandidate() {
-		Contact testContact = [SELECT Id, FirstName, LastName FROM Contact WHERE Active__c = true LIMIT 1];
+		Contact testContact = [SELECT Id, FirstName, LastName FROM Contact WHERE Active__c = TRUE LIMIT 1];
 
-		Nomination__c testNomination = [SELECT Id FROM Nomination__c WHERE Campaign__r.IsActive = true LIMIT 1];
+		Nomination__c testNomination = [SELECT Id FROM Nomination__c WHERE Campaign__r.IsActive = TRUE LIMIT 1];
 
 		CandidateInNomination__c testCandidate = new CandidateInNomination__c();
 		testCandidate.Name = 'TestCandidate';
@@ -44,9 +42,9 @@ private class CandidateInNominationTHTest {
 
 	@isTest
 	static void TestInsertingFourthCandidate() {
-		Contact testContact = [SELECT Id, FirstName, LastName FROM Contact WHERE Active__c = true LIMIT 1];
+		Contact testContact = [SELECT Id, FirstName, LastName FROM Contact WHERE Active__c = TRUE LIMIT 1];
 
-		Nomination__c testNomination = [SELECT Id FROM Nomination__c WHERE Campaign__r.IsActive = true LIMIT 1];
+		Nomination__c testNomination = [SELECT Id FROM Nomination__c WHERE Campaign__r.IsActive = TRUE LIMIT 1];
 
 		//Setting up 3 proxy candidates
 		List<CandidateInNomination__c> testCandidates = new List<CandidateInNomination__c>();
@@ -59,9 +57,8 @@ private class CandidateInNominationTHTest {
 			candidate.Reason__c = 'TestReason' + i;
 			testCandidates.add(candidate);
 		}
-		
+
 		insert testCandidates;
-		
 
 		List<CandidateInNomination__c> assertCandidates = [
 			SELECT Id, Name
@@ -97,9 +94,9 @@ private class CandidateInNominationTHTest {
 
 	@isTest
 	static void TestInsertCandidateCopy() {
-		Contact testContact = [SELECT Id, FirstName, LastName FROM Contact WHERE Active__c = true LIMIT 1];
+		Contact testContact = [SELECT Id, FirstName, LastName FROM Contact WHERE Active__c = TRUE LIMIT 1];
 
-		Nomination__c testNomination = [SELECT Id FROM Nomination__c WHERE Campaign__r.IsActive = true LIMIT 1];
+		Nomination__c testNomination = [SELECT Id FROM Nomination__c WHERE Campaign__r.IsActive = TRUE LIMIT 1];
 
 		CandidateInNomination__c testCandidateMaster = new CandidateInNomination__c();
 		testCandidateMaster.Name = 'TestCandidateMaster';
@@ -110,10 +107,7 @@ private class CandidateInNominationTHTest {
 
 		insert testCandidateMaster;
 
-		System.assertEquals(
-			[SELECT Id, Name FROM CandidateInNomination__c WHERE ThisIsMasterCopy__c = TRUE].size(),
-			1
-		);
+		System.assertEquals([SELECT Id, Name FROM CandidateInNomination__c WHERE ThisIsMasterCopy__c = TRUE].size(), 1);
 
 		CandidateInNomination__c testCandidateCopy = new CandidateInNomination__c();
 		testCandidateCopy.Name = 'TestCandidateCopy';
@@ -122,7 +116,6 @@ private class CandidateInNominationTHTest {
 		testCandidateCopy.PushedBy__c = testCandidateMaster.CandidateContact__c;
 		testCandidateCopy.Reason__c = 'TestCandidateCopy';
 
-		
 		//Perform test
 		Test.startTest();
 		Database.SaveResult result = Database.insert(TestCandidateCopy, false);
@@ -142,6 +135,50 @@ private class CandidateInNominationTHTest {
 		System.assertEquals(assertCandidate.Name, testCandidateCopy.Name);
 		System.assertEquals(assertCandidate.ThisIsMasterCopy__c, false);
 		System.assertEquals(assertCandidate.MasterCopyLink__c, testCandidateMaster.Id);
+	}
 
+	@isTest
+	static void TestDeleteCandidateWithVotes() {
+		Contact activeContact = [SELECT Id, FirstName, LastName FROM Contact WHERE Active__c = TRUE LIMIT 1];
+
+		List<Contact> testContacts = [SELECT Id FROM Contact];
+
+		Nomination__c testNomination = [SELECT Id FROM Nomination__c WHERE Campaign__r.IsActive = TRUE LIMIT 1];
+
+		CandidateInNomination__c testCandidate = new CandidateInNomination__c();
+		testCandidate.Name = 'TestCandidate';
+		testCandidate.CandidateContact__c = activeContact.Id;
+		testCandidate.Nomination__c = testNomination.Id;
+		testCandidate.PushedBy__c = testCandidate.CandidateContact__c;
+		testCandidate.Reason__c = 'TestReason';
+
+		insert testCandidate;
+
+		List<Vote__c> testVotes = CandidateInNominationTestFactory.createVotesForCandidateInNomination(testContacts, testCandidate);
+
+		List<Vote__c> assertVotesBeforeDeletion = [
+			SELECT Id
+			FROM Vote__c
+			WHERE VoteFor__c = :testCandidate.Id
+		];
+		System.assert(assertVotesBeforeDeletion.size()>0);
+		
+
+		//Perform test
+		Test.startTest();
+		Database.DeleteResult result = Database.delete(testCandidate, false);
+		Test.stopTest();
+
+		//Assertion
+
+		System.assert(result.isSuccess());
+
+		List<Vote__c> assertVotesAfterDeletion = [
+				SELECT Id
+				FROM Vote__c
+				WHERE VoteFor__c = :testCandidate.Id
+			];
+
+		System.assertEquals(assertVotesAfterDeletion.size(), 0);
 	}
 }
