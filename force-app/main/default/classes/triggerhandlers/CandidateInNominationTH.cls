@@ -62,10 +62,6 @@ public class CandidateInNominationTH extends TriggerHandler {
 	public override void afterDelete() {
 	}
 
-	public override void afterUndelete() {
-		//Do magic
-	}
-
 	private static Contact getActiveContact() {
 		return [SELECT Id FROM Contact WHERE Active__c = TRUE LIMIT 1];
 	}
