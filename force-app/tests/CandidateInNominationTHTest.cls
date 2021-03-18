@@ -1,9 +1,11 @@
 @isTest
 private class CandidateInNominationTHTest {
+	private static final Integer CONTACTS_NUMBER = 20;
+	private static final Integer NOMINATIONS_NUMBER = 5;
 	@testSetup
 	static void makeData() {
-		List<Contact> testContacts = CandidateInNominationTestFactory.createContacts(20);
-		List<Nomination__c> testNominations = CandidateInNominationTestFactory.createNominationsWithCampaign(5);
+		List<Contact> testContacts = CandidateInNominationTestFactory.createContacts(CONTACTS_NUMBER);
+		List<Nomination__c> testNominations = CandidateInNominationTestFactory.createNominationsWithCampaign(NOMINATIONS_NUMBER);
 	}
 
 	@isTest
