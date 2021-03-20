@@ -14,10 +14,10 @@ public inherited sharing class CandidateController {
 			insert vote;
 		} catch (Exception e) { 
 			throw new AuraHandledException(
-				 contact.FirstName + 
-				 ' ' +
-				 contact.LastName +
-				 '!! your vote was not registered as you have voted already!'
+				  contact.FirstName + 
+				  ' ' +
+				  contact.LastName +
+				 '!! ' + ' Your vote was not registered as you have voted already!'
 			);
 		}
 		String result = contact.FirstName + ' ' + contact.LastName;

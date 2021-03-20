@@ -48,10 +48,10 @@ public class CandidateInNominationTH extends TriggerHandler {
 	public override void beforeDelete() {
 		List<Vote__c> votes = getOldVotes(oldCandidates);
 		if (!votes.isEmpty())
-			try{
+			try {
 				delete votes;
 			} catch (DmlException e) {
-				throw new DmlException (e.getMessage());
+				throw new DmlException(e.getMessage());
 			}
 	}
 

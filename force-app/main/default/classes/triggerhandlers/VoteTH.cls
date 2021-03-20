@@ -13,7 +13,7 @@ public class VoteTH extends TriggerHandler {
 		List<Vote__c> votes = getVotesByVoterID(contact.Id);
 
 		if (votes.size() > 0) {
-			for (Vote__c vote : votes) {
+			for (Vote__c vote : newVotes) {
 				vote.addError('Your vote was not registered! You have already voted for somebody else!');
 			}
 		}

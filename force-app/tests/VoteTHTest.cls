@@ -2,7 +2,6 @@
 private class VoteTHTest {
 	private static final Integer CONTACTS_NUMBER = 20;
 	private static final Integer NOMINATIONS_NUMBER = 5;
-	private static final Integer CANDIDATES_NUMBER = 2;
 	@testSetup
 	static void makeData() {
 		List<Contact> testContacts = CandidateInNominationTestFactory.createContacts(CONTACTS_NUMBER);
@@ -79,14 +78,22 @@ private class VoteTHTest {
 		testVote2.VoteFor__c = testCandidate.Id;
 
 		List<Vote__c> assertVotes2Before = getAllVotes();
+
 		System.assert(assertVotes2Before.size() == 1);
 		//Perform test
 		Test.startTest();
 		Database.SaveResult result = Database.insert(testVote2, false);
 		Test.stopTest();
 
+		System.assert(!result.isSuccess());
+		System.assert(result.getErrors().size() > 0);
+		System.assertEquals(
+			'Your vote was not registered! You have already voted for somebody else!',
+			result.getErrors()[0].getMessage()
+		);
+
 		List<Vote__c> assertVotes2After = getAllVotes();
-		System.assert(assertVotes2After.size() == 2);
+		System.assert(assertVotes2After.size() == 1);
 	}
 
 	private static Contact getActiveContact() {
