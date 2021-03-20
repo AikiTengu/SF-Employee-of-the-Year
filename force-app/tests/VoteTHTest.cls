@@ -47,6 +47,57 @@ private class VoteTHTest {
 	}
 
 	@isTest
+	static void TestAddFreshVoteToCopy() {
+		Contact activeContact = getActiveContact();
+
+		Nomination__c testNomination = getActiveNomination();
+
+		CandidateInNomination__c masterCandidate = new CandidateInNomination__c();
+		masterCandidate.Name = 'TestCandidate';
+		masterCandidate.CandidateContact__c = activeContact.Id;
+		masterCandidate.Nomination__c = testNomination.Id;
+		masterCandidate.PushedBy__c = masterCandidate.CandidateContact__c;
+		masterCandidate.Reason__c = 'TestReason';
+		masterCandidate.ThisIsMasterCopy__c = true;
+
+		insert masterCandidate;
+
+		CandidateInNomination__c copyCandidate = new CandidateInNomination__c();
+		copyCandidate.Name = 'TestCandidate';
+		copyCandidate.CandidateContact__c = activeContact.Id;
+		copyCandidate.Nomination__c = testNomination.Id;
+		copyCandidate.PushedBy__c = copyCandidate.CandidateContact__c;
+		copyCandidate.Reason__c = 'TestReason';
+		copyCandidate.ThisIsMasterCopy__c = false;
+		copyCandidate.MasterCopyLink__c = masterCandidate.Id;
+
+		insert copyCandidate;
+
+		Decimal votesTotalBeforeMaster = getVotesTotal(masterCandidate).VotesTotal__c;
+		Decimal votesTotalBeforeCopy = getVotesTotal(copyCandidate).VotesTotal__c;
+		System.assert(votesTotalBeforeMaster  == 0);
+		System.assert(votesTotalBeforeCopy  == 0);
+
+		Vote__c testVote = new Vote__c();
+		testVote.Voter__c = activeContact.Id;
+		testVote.VoteFor__c = copyCandidate.Id;
+
+		//Perform test
+		Test.startTest();
+		Database.SaveResult result = Database.insert(testVote, false);
+		Test.stopTest();
+
+		//Assertion
+
+		System.assert(result.isSuccess());
+
+		Decimal votesTotalAfterMaster = getVotesTotal(masterCandidate).VotesTotal__c;
+		Decimal votesTotalAfterCopy = getVotesTotal(copyCandidate).VotesTotal__c;
+		System.assert(votesTotalAfterMaster  == 1);
+		System.assert(votesTotalAfterCopy  == 1);
+	}
+
+	@isTest
 	static void TestAddDuplicateVote() {
 		Contact activeContact = getActiveContact();
 
@@ -106,5 +157,9 @@ private class VoteTHTest {
 
 	private static List<Vote__c> getAllVotes() {
 		return [SELECT Id FROM Vote__c];
+	}
+
+	private static CandidateInNomination__c getVotesTotal(CandidateInNomination__c candidate) {
+		return [SELECT VotesTotal__c FROM CandidateInNomination__c WHERE Id = :candidate.Id LIMIT 1];
 	}
 }
