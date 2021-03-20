@@ -7,9 +7,6 @@ public class VoteTH extends TriggerHandler {
 		this.oldVotes = Trigger.old;
 	}
 
-	public override void beforeUpdate() {
-	}
-
 	public override void beforeInsert() {
 		Contact contact = getActiveContact();
 
@@ -20,10 +17,6 @@ public class VoteTH extends TriggerHandler {
 				vote.addError('Your vote was not registered! You have already voted for somebody else!');
 			}
 		}
-	}
-
-	public override void beforeDelete() {
-		//Do magic
 	}
 
 	public override void afterInsert() {
@@ -45,15 +38,6 @@ public class VoteTH extends TriggerHandler {
 				throw new DmlException(e.getMessage());
 			}
 		}
-	}
-
-	public override void afterUpdate() {
-	}
-	public override void afterDelete() {
-		//Do magic
-	}
-	public override void afterUndelete() {
-		//Do magic
 	}
 
 	private static Contact getActiveContact() {
