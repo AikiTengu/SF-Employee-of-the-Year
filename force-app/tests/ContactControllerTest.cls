@@ -25,19 +25,13 @@ private class ContactControllerTest {
 	static void TestSettingActiveContact() {
         List<Contact> testContacts = ContactController.getContacts(); 
 
-        Contact activeContactBeforeChange = ContactController.getActiveContact();
-
-        System.assertEquals(activeContactBeforeChange.FirstName, 'Active');
-        System.assertEquals(activeContactBeforeChange.LastName, 'Contact');   
-
         Test.startTest();
         ContactController.setActiveContact(testContacts.get(0).Id);
         Test.stopTest();
 
         Contact activeContactAfterChange = ContactController.getActiveContact();
 
-        System.assertEquals(activeContactAfterChange.FirstName, testContacts.get(0).FirstName);
-        System.assertEquals(activeContactAfterChange.LastName, testContacts.get(0).LastName);
+        System.assertEquals(activeContactAfterChange.Id, testContacts.get(0).Id);
 
     }
 }

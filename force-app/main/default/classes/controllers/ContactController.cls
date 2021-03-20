@@ -25,7 +25,7 @@ public inherited sharing class ContactController {
 	}
 
 	@AuraEnabled(cacheable=true)
-	public static Contact getActiveContact(){
+	public static Contact getActiveContact() {
 		return getActiveContactList().get(0);
 	}
 

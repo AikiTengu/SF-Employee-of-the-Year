@@ -8,9 +8,6 @@ public class CandidateInNominationTH extends TriggerHandler {
 		this.oldCandidates = Trigger.old;
 	}
 
-	public override void beforeUpdate() {
-	}
-
 	public override void beforeInsert() {
 		Contact contact = getActiveContact();
 		CandidateInNomination__c candidateCheck = newCandidates.get(0);
@@ -51,15 +48,11 @@ public class CandidateInNominationTH extends TriggerHandler {
 	public override void beforeDelete() {
 		List<Vote__c> votes = getOldVotes(oldCandidates);
 		if (!votes.isEmpty())
-			delete votes;
-	}
-
-	public override void afterInsert() {
-		//Do magic
-	}
-	public override void afterUpdate() {
-	}
-	public override void afterDelete() {
+			try{
+				delete votes;
+			} catch (DmlException e) {
+				throw new DmlException (e.getMessage());
+			}
 	}
 
 	private static Contact getActiveContact() {
