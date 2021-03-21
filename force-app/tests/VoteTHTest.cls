@@ -11,7 +11,7 @@ private class VoteTHTest {
 	}
 
 	@isTest
-	static void TestAddFreshVote() {
+	static void testAddFreshVote() {
 		Contact activeContact = getActiveContact();
 
 		Nomination__c testNomination = getActiveNomination();
@@ -47,7 +47,7 @@ private class VoteTHTest {
 	}
 
 	@isTest
-	static void TestAddFreshVoteToCopy() {
+	static void testAddFreshVoteToCopy() {
 		Contact activeContact = getActiveContact();
 
 		Nomination__c testNomination = getActiveNomination();
@@ -98,7 +98,7 @@ private class VoteTHTest {
 	}
 
 	@isTest
-	static void TestAddDuplicateVote() {
+	static void testAddDuplicateVote() {
 		Contact activeContact = getActiveContact();
 
 		Nomination__c testNomination = getActiveNomination();

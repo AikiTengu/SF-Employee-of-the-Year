@@ -7,14 +7,14 @@ private class ContactControllerTest {
 	}
 
 	@isTest
-	static void TestGettingAllContacts() {
+	static void testGettingAllContacts() {
         List<Contact> testContacts = ContactController.getContacts();
 
         System.assertEquals(testContacts.size(), CONTACTS_NUMBER);
     }
 
     @isTest
-	static void TestGettingActiveContact() {
+	static void testGettingActiveContact() {
         Contact activeContact = ContactController.getActiveContact();
 
         System.assertEquals(activeContact.FirstName, 'Active');
@@ -22,7 +22,7 @@ private class ContactControllerTest {
     }
 
     @isTest
-	static void TestSettingActiveContact() {
+	static void testSettingActiveContact() {
         List<Contact> testContacts = ContactController.getContacts(); 
 
         Test.startTest();

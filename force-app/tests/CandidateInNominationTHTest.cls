@@ -11,7 +11,7 @@ private class CandidateInNominationTHTest {
 	}
 
 	@isTest
-	static void TestInsertFreshNewCandidate() {
+	static void testInsertFreshNewCandidate() {
 		Contact testContact = getActiveContact();
 
 		Nomination__c testNomination = getActiveNomination();
@@ -45,7 +45,7 @@ private class CandidateInNominationTHTest {
 	}
 
 	@isTest
-	static void TestInsertingFourthCandidate() {
+	static void testInsertingFourthCandidate() {
 		Contact testContact = getActiveContact();
 
 		Nomination__c testNomination = getActiveNomination();
@@ -97,7 +97,7 @@ private class CandidateInNominationTHTest {
 	}
 
 	@isTest
-	static void TestInsertCandidateCopy() {
+	static void testInsertCandidateCopy() {
 		Contact testContact = getActiveContact();
 
 		Nomination__c testNomination = getActiveNomination();
@@ -142,7 +142,7 @@ private class CandidateInNominationTHTest {
 	}
 
 	@isTest
-	static void TestDeleteCandidateWithVotes() {
+	static void testDeleteCandidateWithVotes() {
 		Contact activeContact = getActiveContact();
 
 		List<Contact> testContacts = [SELECT Id FROM Contact];
