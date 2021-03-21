@@ -31,7 +31,9 @@ private class CandidateControllerTest {
 
         insert candidates;
 
+        Test.startTest();
         List<CandidateInNomination__c> testCandidates = CandidateController.getCandidates();
+        Test.stopTest();
 
         System.assertEquals(testCandidates.size(), candidates.size());
     }
@@ -42,23 +44,50 @@ private class CandidateControllerTest {
 
         Nomination__c activeNomination = getActiveNomination();
 
-        List<CandidateInNomination__c> candidates = new List<CandidateInNomination__c>();
-        for (Integer i = 0; i < CANDIDATES_NUMBER; i++) {
-            CandidateInNomination__c candidate = new CandidateInNomination__c();
-		    candidate.Name = 'TestCandidate' + i;
-		    candidate.CandidateContact__c = activeContact.Id;
-		    candidate.Nomination__c = activeNomination.Id;
-		    candidate.PushedBy__c = candidate.CandidateContact__c;
-		    candidate.Reason__c = 'TestReason' + i;  
-            candidate.Approved__c = true;
-            candidates.add(candidate);
+        CandidateInNomination__c testCandidate = new CandidateInNomination__c();
+		testCandidate.Name = 'TestCandidate';
+		testCandidate.CandidateContact__c = activeContact.Id;
+		testCandidate.Nomination__c = activeNomination.Id;
+		testCandidate.PushedBy__c = testCandidate.CandidateContact__c;
+		testCandidate.Reason__c = 'TestReason';
+
+        insert testCandidate;
+
+        String testString = '';
+        Test.startTest();
+        testString = CandidateController.putVote(testCandidate.Id);
+        Test.stopTest();
+
+        System.assertEquals(testString,activeContact.FirstName + ' ' + activeContact.LastName);
+    }
+
+    @isTest
+	static void testPutDuplicateVote() {
+        Contact activeContact = getActiveContact();
+        AuraHandledException expectedDuplicateVoteException;
+
+        Nomination__c activeNomination = getActiveNomination();
+
+        CandidateInNomination__c testCandidate = new CandidateInNomination__c();
+		testCandidate.Name = 'TestCandidate';
+		testCandidate.CandidateContact__c = activeContact.Id;
+		testCandidate.Nomination__c = activeNomination.Id;
+		testCandidate.PushedBy__c = testCandidate.CandidateContact__c;
+		testCandidate.Reason__c = 'TestReason';
+
+        insert testCandidate;
+
+        String testString = '';
+        testString = CandidateController.putVote(testCandidate.Id);
+
+        try {
+        testString = CandidateController.putVote(testCandidate.Id);
+        }
+        catch (AuraHandledException e) {
+            expectedDuplicateVoteException = e;
         }
 
-        insert candidates;
-
-        List<CandidateInNomination__c> testCandidates = CandidateController.getCandidates();
-
-        System.assertEquals(testCandidates.size(), candidates.size());
+		System.Assert(expectedDuplicateVoteException.getMessage().contains(' Your vote was not registered as you have voted already!'));
     }
 
 
