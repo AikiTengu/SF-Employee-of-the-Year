@@ -34,4 +34,5 @@ private class ContactControllerTest {
         System.assertEquals(activeContactAfterChange.Id, testContacts.get(0).Id);
 
     }
+    
 }
