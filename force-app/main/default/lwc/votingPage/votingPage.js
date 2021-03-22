@@ -4,7 +4,6 @@ import { refreshApex } from "@salesforce/apex";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import getCandidates from "@salesforce/apex/CandidateController.getCandidates";
 import putVote from "@salesforce/apex/CandidateController.putVote";
-import getActiveContact from "@salesforce/apex/ContactController.getActiveContact";
 
 export default class votingList extends LightningElement {
 	
@@ -25,7 +24,6 @@ export default class votingList extends LightningElement {
 				preparedCandidate.Candidate_Department = candidate.CandidateContact__r.Department;
 				preparedCandidate.Candidate_Description = candidate.Reason__c;
 				preparedCandidate.Candidate_Votes = candidate.VotesTotal__c;
-				preparedCandidate.Candidate_Photo = candidate.Photo__c;
 				preparedCandidates.push(preparedCandidate);
 			});
 			this.candidates.data = preparedCandidates;
@@ -43,7 +41,6 @@ export default class votingList extends LightningElement {
 		{ label: "Department", fieldName: "Candidate_Department", type: "text" },
 		{ label: "Description", fieldName: "Candidate_Description", type: "text", initialWidth: 280, wrapText: true },
 		{ label: "Votes", fieldName: "Candidate_Votes", type: "text", initialWidth: 80 },
-		{ label: "Photo", fieldName: "Candidate_Photo", type: "image", initialWidth: 120 },
 		{
 			type: "button",
 			typeAttributes: {
