@@ -4,7 +4,7 @@
     <deleteConstraint>SetNull</deleteConstraint>
     <description>Self-lookup for master copy</description>
     <externalId>false</externalId>
-    <label>MasterCopyLink</label>
+    <label>Master Copy Link</label>
     <referenceTo>CandidateInNomination__c</referenceTo>
     <relationshipLabel>CandidatesInNominations</relationshipLabel>
     <relationshipName>CandidatesInNominations</relationshipName>

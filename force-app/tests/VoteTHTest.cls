@@ -75,8 +75,8 @@ private class VoteTHTest {
 
 		Decimal votesTotalBeforeMaster = getVotesTotal(masterCandidate).VotesTotal__c;
 		Decimal votesTotalBeforeCopy = getVotesTotal(copyCandidate).VotesTotal__c;
-		System.assert(votesTotalBeforeMaster  == 0);
-		System.assert(votesTotalBeforeCopy  == 0);
+		System.assert(votesTotalBeforeMaster == 0);
+		System.assert(votesTotalBeforeCopy == 0);
 
 		Vote__c testVote = new Vote__c();
 		testVote.Voter__c = activeContact.Id;
@@ -93,8 +93,8 @@ private class VoteTHTest {
 
 		Decimal votesTotalAfterMaster = getVotesTotal(masterCandidate).VotesTotal__c;
 		Decimal votesTotalAfterCopy = getVotesTotal(copyCandidate).VotesTotal__c;
-		System.assert(votesTotalAfterMaster  == 1);
-		System.assert(votesTotalAfterCopy  == 1);
+		System.assert(votesTotalAfterMaster == 1);
+		System.assert(votesTotalAfterCopy == 1);
 	}
 
 	@isTest
@@ -109,9 +109,9 @@ private class VoteTHTest {
 		testCandidate.Nomination__c = testNomination.Id;
 		testCandidate.PushedBy__c = testCandidate.CandidateContact__c;
 		testCandidate.Reason__c = 'TestReason';
-	
+
 		insert testCandidate;
-		
+
 		Vote__c testVote1 = new Vote__c();
 		testVote1.Voter__c = activeContact.Id;
 		testVote1.VoteFor__c = testCandidate.Id;

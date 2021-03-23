@@ -156,7 +156,7 @@
     <externalSharingModel>ReadWrite</externalSharingModel>
     <label>Nomination</label>
     <nameField>
-        <label>NominationName</label>
+        <label>Nomination Name</label>
         <type>Text</type>
     </nameField>
     <pluralLabel>Nominations</pluralLabel>

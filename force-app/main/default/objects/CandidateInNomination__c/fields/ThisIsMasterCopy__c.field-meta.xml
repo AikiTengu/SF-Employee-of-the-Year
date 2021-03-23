@@ -4,7 +4,7 @@
     <defaultValue>true</defaultValue>
     <description>Check if this is the main copy of all similar candidates in this nomination</description>
     <externalId>false</externalId>
-    <label>ThisIsMasterCopy</label>
+    <label>This Is Master Copy</label>
     <trackTrending>false</trackTrending>
     <type>Checkbox</type>
 </CustomField>
